@@ -46,6 +46,14 @@ public class Tree {
                 add(data, root.left);
             }
         }
+
+        if (height(root.right) - height(root.left) > 1) {
+            leftRotate();
+        }
+
+        if (height(root.left) - height(root.right) > 1) {
+            rightRotate();
+        }
     }
 
     // 前序遍历
@@ -237,19 +245,55 @@ public class Tree {
 
     private void midShowAfterXiansuohua(Node root) {
         Node node = root;
-        while (node != null ) {
-            while (node.leftType == 0){
+        while (node != null) {
+            while (node.leftType == 0) {
                 node = node.left;
             }
             System.out.println(node.data);
 
-            while (node.rightType==1){
+            while (node.rightType == 1) {
                 node = node.right;
                 System.out.println(node.data);
             }
             node = node.right;
         }
 
+    }
+
+
+    // 返回整个树的高度
+    public int height() {
+        return height(root);
+    }
+
+    // 返回以这个节点为根节点的树的高度
+    private int height(Node root) {
+        if (root == null) {
+            return 0;
+        }
+        return Math.max(root.left == null ? 0 : height(root.left), root.right == null ? 0 : height(root.right)) + 1;
+    }
+
+    // 平衡二叉树 左旋
+    private void leftRotate() {
+        Node node = new Node(root.data);
+        node.left = root.left;
+        node.right = root.right.left;
+
+        root.data = root.right.data;
+        root.right = root.right.left;
+        root.left = node;
+    }
+
+    // 平衡二叉树 右旋
+    private void rightRotate() {
+        Node node = new Node(root.data);
+        node.right = root.right;
+        node.left = root.left.right;
+
+        root.data = root.left.data;
+        root.left = root.left.left;
+        root.right = node;
     }
 
 
